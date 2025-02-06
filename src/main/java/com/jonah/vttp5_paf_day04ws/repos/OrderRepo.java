@@ -1,0 +1,59 @@
+package com.jonah.vttp5_paf_day04ws.repos;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
+
+import com.jonah.vttp5_paf_day04ws.models.OrderPage;
+
+@Repository
+public class OrderRepo {
+    @Autowired
+    private JdbcTemplate template;
+
+
+    public void addOrder(OrderPage op){
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        int added = template.update(Queries.SQL_ORDER_INSERT,op.getOrder_date(), op.getCustomer_name(), op.getShip_address(), op.getNotes(), op.getTax());
+        System.out.println("WROTE :" + added);
+        System.out.println("THE KEY WRITTEN IS:" + keyHolder.getKey());
+    }
+
+
+    public int addOrderWithKeyholder(OrderPage op){
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        PreparedStatementCreator psc = new PreparedStatementCreator() {
+          @Override
+          public PreparedStatement createPreparedStatement(Connection con) throws SQLException{
+            
+            PreparedStatement ps = con.prepareStatement(Queries.SQL_ORDER_INSERT, new String[] {"id"});
+            ps.setString(1, op.getOrder_date().toString());
+            ps.setString(2, op.getCustomer_name());
+            ps.setString(3, op.getShip_address());
+            ps.setString(4, op.getNotes());
+            ps.setDouble(5, op.getTax());
+            return ps;
+          }  
+        };
+        int addOrder = template.update(psc, keyHolder);
+        System.out.println("ADDED TO DATABASE, KEY IS:" + keyHolder.getKey() + keyHolder);
+        return keyHolder.getKey().intValue();
+
+
+    }
+
+
+
+    public void addDetail(OrderPage op){
+        int added = template.update(Queries.SQL_DETAIL_INSERT, op.getProduct(), op.getUnit_price(), op.getDiscount(), op.getQuantity(), op.getOrder_id());
+    }
+    
+}

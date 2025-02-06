@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>My Website</title>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="icon" href="./favicon.ico" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  </head>
+  <body>
+    <img width="5%" height="5%" src="https://picsum.photos/200">
+    <main>
+        <h1>ORDER FORM</h1>  
+        <p>Text</p>
+
+        <form method="post" th:action="@{/order}" th:object="${op}">
+
+          
+          <div class="mb-3">
+              <label class="form-label">Name</label>
+              <input type="text" class="form-control" name="name" th:field="*{customer_name}" placeholder="name">
+          </div>
+
+
+          <div class="mb-3">
+            <label class="form-label">address</label>
+            <input type="text" class="form-control" name="description" th:field="*{ship_address}" placeholder="description">
+        </div>
+
+
+
+
+        <div class="mb-3">
+          <label class="form-label">notes</label>
+          <input type="text" class="form-control" name="priority" th:field="*{notes}" placeholder="priority">
+      </div>
+
+
+
+
+          <div class="mb-3">
+              <label class="form-label">Tax</label>
+              <input type="" class="form-control" name="dueDate" th:field="*{tax}" placeholder="Insert Due Date">
+          </div>
+<!--           <div class="alert alert-danger" th:if="${#fields.hasErrors('dueDate')}" th:errors="*{dueDate}"></div> -->
+
+
+
+          <div class="mb-3">
+            <label class="form-label">product</label>
+            <input type="text" class="form-control" name="priority" th:field="*{product}" placeholder="priority">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">unit price</label>
+            <input type="text" class="form-control" name="priority" th:field="*{unit_price}" placeholder="priority">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">discount</label>
+            <input type="text" class="form-control" name="priority" th:field="*{discount}" placeholder="priority">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">quantity</label>
+            <input type="text" class="form-control" name="priority" th:field="*{quantity}" placeholder="priority">
+          </div>
+
+
+          <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+
+
+        
+    </main>
+    <script src="index.js"></script>
+  </body>
+</html>
