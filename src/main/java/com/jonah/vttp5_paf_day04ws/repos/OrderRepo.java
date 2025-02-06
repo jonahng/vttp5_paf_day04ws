@@ -27,7 +27,9 @@ public class OrderRepo {
     }
 
 
-    public int addOrderWithKeyholder(OrderPage op){
+    public int addOrderWithKeyholder(OrderPage op) throws Exception{
+
+        try {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         PreparedStatementCreator psc = new PreparedStatementCreator() {
@@ -46,14 +48,26 @@ public class OrderRepo {
         int addOrder = template.update(psc, keyHolder);
         System.out.println("ADDED TO DATABASE, KEY IS:" + keyHolder.getKey() + keyHolder);
         return keyHolder.getKey().intValue();
+        } catch (Exception e) {
+
+            throw new Exception("UNABLE TO WRITE ORDER TO DATABASE");
+            // TODO: handle exception
+        }
+        
 
 
     }
 
 
 
-    public void addDetail(OrderPage op){
-        int added = template.update(Queries.SQL_DETAIL_INSERT, op.getProduct(), op.getUnit_price(), op.getDiscount(), op.getQuantity(), op.getOrder_id());
+    public void addDetail(OrderPage op) throws Exception{
+        try {
+            int added = template.update(Queries.SQL_DETAIL_INSERT, op.getProduct(), op.getUnit_price(), op.getDiscount(), op.getQuantity(), op.getOrder_id());
+        } catch (Exception e) {
+            // TODO: handle exception
+            throw new Exception("ORDER DETAILS COULD NOT BE WRITTEN TO DATABASE!");
+        }
+       
     }
     
 }

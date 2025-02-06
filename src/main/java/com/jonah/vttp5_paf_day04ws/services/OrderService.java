@@ -19,19 +19,25 @@ public class OrderService {
         orderRepo.addOrder(op);
     }
 
-    public void writeToDetail(OrderPage op){
+    public void writeToDetail(OrderPage op) throws Exception{
         orderRepo.addDetail(op);
     }
 
 
     @Transactional
     public void writeOrderPage(OrderPage op){
-        op.setOrder_date(LocalDate.now());
 
-        int orderId = orderRepo.addOrderWithKeyholder(op);
-        //orderRepo.addOrder(op);
-        op.setOrder_id(orderId);
-        orderRepo.addDetail(op);
+        try {
+            op.setOrder_date(LocalDate.now());
+            int orderId = orderRepo.addOrderWithKeyholder(op);
+            //orderRepo.addOrder(op);
+            op.setOrder_id(orderId);
+            orderRepo.addDetail(op);
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+
+       
     }
 
     
