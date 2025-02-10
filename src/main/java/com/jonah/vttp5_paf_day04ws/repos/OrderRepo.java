@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -19,6 +21,7 @@ public class OrderRepo {
     private JdbcTemplate template;
 
 
+
     public void addOrder(OrderPage op){
         KeyHolder keyHolder = new GeneratedKeyHolder();
         int added = template.update(Queries.SQL_ORDER_INSERT,op.getOrder_date(), op.getCustomer_name(), op.getShip_address(), op.getNotes(), op.getTax());
@@ -26,7 +29,7 @@ public class OrderRepo {
         System.out.println("THE KEY WRITTEN IS:" + keyHolder.getKey());
     }
 
-
+    //MYSQL MUST HAVE THE TABLES SET UP BEFOREHAND!
     public int addOrderWithKeyholder(OrderPage op) throws Exception{
 
         try {
@@ -47,10 +50,17 @@ public class OrderRepo {
         };
         int addOrder = template.update(psc, keyHolder);
         System.out.println("ADDED TO DATABASE, KEY IS:" + keyHolder.getKey() + keyHolder);
+
+
+        //listRepo.leftPush("messages", op.toString());
+        //leftPush("messages", op.toString());
+        System.out.println("ADDED TO REDIS!" + op.toString());
+
+
         return keyHolder.getKey().intValue();
         } catch (Exception e) {
 
-            throw new Exception("UNABLE TO WRITE ORDER TO DATABASE");
+            throw new Exception("UNABLE TO WRITE ORDER TO DATABASE" + e.toString());
             // TODO: handle exception
         }
         
@@ -69,5 +79,18 @@ public class OrderRepo {
         }
        
     }
+
+
+/*     @Autowired
+    @Qualifier("template01")
+    RedisTemplate<String, String> redisTemplate;
+
+    // slide 30, slide 34
+    public void leftPush(String key, String value) {
+        redisTemplate.opsForList().leftPush("messages", value);
+    }
+ */
+
+    
     
 }

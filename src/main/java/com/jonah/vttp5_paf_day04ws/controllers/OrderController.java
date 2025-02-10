@@ -33,7 +33,10 @@ public class OrderController {
     @PostMapping("/order")
     public String receiveOrderForm(@ModelAttribute("op") OrderPage orderPage){
         System.out.println("THE ORDER PAGE RECEIVED IS :" + orderPage.getCustomer_name() + orderPage.getNotes());
-        orderService.writeOrderPage(orderPage);
+        orderService.writeToRedis(orderPage);
+
+
+        //orderService.writeOrderPage(orderPage);
 
         return "redirect:";
     }

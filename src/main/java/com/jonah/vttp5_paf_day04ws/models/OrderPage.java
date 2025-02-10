@@ -30,9 +30,20 @@ public class OrderPage {
     private int quantity;
 
 
+    
+
 
     
 
+
+
+    @Override
+    public String toString() {
+        return "OrderPage [order_id=" + order_id + ", order_date=" + order_date + ", customer_name=" + customer_name
+                + ", ship_address=" + ship_address + ", notes=" + notes + ", tax=" + tax + ", details_id=" + details_id
+                + ", product=" + product + ", unit_price=" + unit_price + ", discount=" + discount + ", quantity="
+                + quantity + "]";
+    }
 
 
     public OrderPage() {
